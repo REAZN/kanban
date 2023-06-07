@@ -78,7 +78,7 @@ model List {
   board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
   boardId   String
   position  Int?
-  Task      Task[]
+  task      Task[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

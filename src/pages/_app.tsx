@@ -2,6 +2,7 @@ import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { api } from "@/utils/api";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 import { Inter } from "next/font/google";
 
@@ -11,6 +12,7 @@ const inter = Inter({
 });
 
 import "@/styles/globals.css";
+import Head from "next/head";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -22,9 +24,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <style jsx global>
         {`:root { --font-inter: ${inter.style.fontFamily}; }`}
       </style>
-        <SessionProvider session={session}>
-          <Component {...pageProps} />
-        </SessionProvider>
+      <Head>
+        <title>Kanban</title>
+        <meta name="description" content="Kanban" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+      <ReactQueryDevtools initialIsOpen={false}/>
     </>
   );
 };

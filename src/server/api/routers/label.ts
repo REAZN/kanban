@@ -14,7 +14,10 @@ export const labelRouter = createTRPCRouter({
       return ctx.prisma.label.findMany({
         where: {
           boardId: input.boardId,
-        }
+        },
+         orderBy: {
+          createdAt: "asc",
+         }
       });
     }),
 

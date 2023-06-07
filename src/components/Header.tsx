@@ -23,7 +23,8 @@ import {
 // const BoardSwitcher = dynamic(() => import('./BoardSwitcher'), {
 //   ssr: false,
 // })
-import { BoardSwitcher } from "@/components";
+import { BoardSwitcher, TeamSwitcher } from "@/components";
+import { Divider } from "@/assets/icons";
 
 
 export const Header = () => {
@@ -33,7 +34,13 @@ export const Header = () => {
     <header>
       <div className="border-b">
         <div className="flex h-16 items-center px-4">
-          <BoardSwitcher/>
+          <div className="flex items-center ">
+            <div className="text-2xl font-bold">LOGO</div>
+            <Divider/>
+            {/*<TeamSwitcher/>*/}
+            {/*<Divider/>*/}
+            <BoardSwitcher/>
+          </div>
           <nav className={"flex items-center space-x-4 lg:space-x-6 mx-6"}>
             <Link href="/example" className="text-sm font-medium transition-colors hover:text-primary">
               Board
@@ -52,7 +59,7 @@ export const Header = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-9 w-9">
+                    <Avatar className="h-8 w-8">
                       <AvatarImage src={sessionData?.user?.image ?? ""} alt={sessionData?.user?.name ?? "Avatar"}/>
                       <AvatarFallback>{sessionData?.user?.name?.charAt(0) ?? "?"}</AvatarFallback>
                     </Avatar>

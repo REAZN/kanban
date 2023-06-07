@@ -35,11 +35,6 @@ export const BoardSwitcher = () => {
 
   const [open, setOpen] = React.useState(false);
 
-  // const { selectedBoard } = useStoreState((state) => state.board.data);
-  // const { setSelectedBoard } = useStoreActions((actions) => actions.board);
-// const {selectedBoard, setSelectedBoard} = useStore()
-// const setSelectedBoard = useStore()
-
   const { data: boards, refetch: refetchBoards, isLoading } = api.board.getAll.useQuery(
     undefined,
     {
@@ -51,13 +46,11 @@ export const BoardSwitcher = () => {
   );
 
   const [selectedBoard, setSelectedBoard] = React.useState<Board | undefined>();
-  // const [selectedBoard, setSelectedBoard] = React.useState<Board | undefined>(boards?.find((board) => board.id === router.query.board));
 
   useEffect(() => {
     setSelectedBoard(boards?.find((board) => board.id === router.query.board))
   }, [boards, router.query.board])
 
-  // console.log(router.query.board, "router.query.board")
 
   const createBoard = api.board.create.useMutation({
     onSuccess: () => {
@@ -65,15 +58,10 @@ export const BoardSwitcher = () => {
     }
   });
 
-  // console.log("boards in boardswitcher", boards);
-  // console.log("selected in boardswitcher", selectedBoard);
-
-  // const selectedBoard = boards?.find((board) => board.id === router.query.board);
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button className="w-[200px] justify-between" variant="outline" size="sm" role="combobox" aria-expanded={open} aria-label="Select a board">
+        <Button className="justify-between px-0" variant="ghost" size="sm" role="combobox" aria-expanded={open} aria-label="Select a board">
           <Avatar className="mr-2 h-5 w-5">
             { isLoading ? (
               <Skeleton className="rounded-full" />
@@ -92,7 +80,7 @@ export const BoardSwitcher = () => {
           {isLoading ? (
               <Skeleton className="rounded-full w-1/2 h-1/2" />
           ) : selectedBoard?.name}
-          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50 ml-3" />
         </Button>
 
       </PopoverTrigger>
@@ -101,7 +89,6 @@ export const BoardSwitcher = () => {
           <CommandList>
             <CommandInput placeholder="Search boards..." />
             <CommandEmpty>No board found.</CommandEmpty>
-            {/*{groups.map((group) => (*/}
               <CommandGroup heading="Personal">
                 {isLoading && (<div>Loading...</div>)}
                 {boards?.map((board, index) => (
@@ -109,7 +96,6 @@ export const BoardSwitcher = () => {
                     <CommandItem
                       key={index}
                       onSelect={() => {
-                        // setSelectedBoard(board);
                         setOpen(false);
                       }}
                       className="text-sm"

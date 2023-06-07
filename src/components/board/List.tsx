@@ -1,22 +1,18 @@
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Plus } from "lucide-react"
 import { api, type RouterOutputs } from "@/utils/api";
-import { TaskPopover, Task } from "@/components";
+import { TaskPopover, Task as TaskComp } from "@/components";
 import { useRouter } from "next/router";
 
 type List = RouterOutputs["list"]["getAll"][0];
+type Task = RouterOutputs["task"]["getAll"][0]
 
-export const List = ({list, index}: {list: List, index: number }) => {
-
+export const List = ({list, index, refresh}: {list: List, index: number, refresh: () => unknown }) => {
   const router = useRouter();
-
-  const { data: tasks, refetch: refetchTasks } = api.task.getAll.useQuery({
-    boardId: String(router.query.board),
-  });
 
   const createTask = api.task.create.useMutation({
     onSuccess: () => {
-      void refetchTasks();
+      void refresh();
     },
   });
 
@@ -34,15 +30,15 @@ export const List = ({list, index}: {list: List, index: number }) => {
                   <div className="h-auto overflow-y-auto overflow-x-hidden flex flex-col gap-2"
                        // style={{ maxHeight: "calc(100vh - 290px)"}}
                   >
-                    {tasks?.map((task, index) => {
-                      if (task.listId !== list.id) return null;
+                    {list.task.map((task, indexT: number) => {
+                      // if (task.listId !== list.id) return null;
                       return (
-                        // <TaskPopover task={task} key={index}>
-                          <Task
-                            key={index}
+                        // <TaskPopover task={task} key={indexT}>
+                          <TaskComp
+                            key={indexT}
                             className="last:mb-1"
-                            index={index}
-                            task={task}
+                            index={indexT}
+                            task={task as Task}
                           />
                         // </TaskPopover>
                       )
@@ -61,6 +57,7 @@ export const List = ({list, index}: {list: List, index: number }) => {
                     <span className="opacity-50">New</span>
                   </button>
                 </div>
+                {provided.placeholder}
               </div>
             )}
           </Droppable>
