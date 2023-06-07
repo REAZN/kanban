@@ -8,13 +8,21 @@ import {
 export const listRouter = createTRPCRouter({
   getAll: protectedProcedure
     .input(z.object({
-      boardId: z.string()
+      boardId: z.string(),
+      withTasks: z.boolean().optional().default(false)
     }))
     .query(({ ctx, input }) => {
       return ctx.prisma.list.findMany({
         where: {
           boardId: input.boardId,
         },
+        include: {
+          task: input.withTasks ? {
+            include: {
+              label: true,
+            }
+          } : false,
+        }
       });
     }),
 
@@ -31,5 +39,61 @@ export const listRouter = createTRPCRouter({
         }
       });
       }
-    )
+    ),
+
+  updatePos: protectedProcedure
+    .input(z.object({
+      boardId: z.string(),
+      listId: z.string(),
+      newPosition: z.number()
+    }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.$transaction(async (tx) => {
+        await tx.list.updateMany({
+          where: {
+            boardId: input.boardId,
+            position: {
+              gte: input.newPosition
+            }
+          },
+          data: {
+            position: {
+              increment: 1
+            }
+          }
+        })
+
+        const list = await tx.list.findUnique({
+          where: {
+            id: input.listId,
+          }
+        })
+
+        await tx.list.update({
+          where: {
+            id: input.listId,
+          },
+          data: {
+            position: input.newPosition,
+          }
+        })
+
+        if (list?.position) {
+          await tx.list.updateMany({
+            where: {
+              boardId: input.boardId,
+              position: {
+                gte: list.position 
+              }
+            },
+            data: {
+              position: {
+                decrement: 1
+              }
+            }
+          })
+        }
+      });
+    }
+  )
 })
