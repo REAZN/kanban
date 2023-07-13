@@ -1,9 +1,15 @@
 import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
-export default {
+module.exports = {
   darkMode: ["class"],
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  safelist: ["light", "dark"],
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+	],
   theme: {
     container: {
       center: true,
@@ -13,48 +19,13 @@ export default {
       },
     },
     extend: {
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
       borderRadius: {
-        lg: `var(--radius)`,
-        md: `calc(var(--radius) - 2px)`,
-        sm: "calc(var(--radius) - 4px)",
+        lg: `0.5rem`,
+        md: `calc(0.5rem - 2px)`,
+        sm: "calc(0.5rem - 4px)",
       },
       fontFamily: {
-        primary: ["var(--font-sans)", ...fontFamily.sans],
+        primary: ["var(--font-inter)", ...fontFamily.sans],
         XD: ["var(--font-sans)", ...fontFamily.sans],
       },
       keyframes: {
@@ -73,5 +44,90 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    require("tailwindcss-themer")({
+      defaultTheme: {
+        extend: {
+          colors: {
+            border: "hsl(214 32% 91%)",
+            input: "hsl(214 32% 91%)",
+            ring: "hsl(215 20% 65%)",
+            background: "hsl(0 0% 100%)",
+            foreground: "hsl(222 47% 11%)",
+            primary: {
+              DEFAULT: "hsl(222 47% 11%)",
+              foreground: "hsl(210 40% 98%)",
+            },
+            secondary: {
+              DEFAULT: "hsl(210 40% 96%)",
+              foreground: "hsl(222 47% 11%)",
+            },
+            destructive: {
+              DEFAULT: "hsl(0 100% 50%)",
+              foreground: "hsl(210 40% 98%)",
+            },
+            muted: {
+              DEFAULT: "hsl(210 40% 96%)",
+              foreground: "hsl(215 16% 40%)",
+            },
+            accent: {
+              DEFAULT: "hsl(210 40% 96%)",
+              foreground: "hsl(222 47% 11%)",
+            },
+            popover: {
+              DEFAULT: "hsl(0 0% 100%)",
+              foreground: "hsl(222 47% 11%)",
+            },
+            card: {
+              DEFAULT: "hsl(0 0% 100%)",
+              foreground: "hsl(222 47% 11%)",
+            },
+          },
+
+        },
+      },
+      themes: [{
+          name: "dark",
+          extend: {
+            colors: {
+              border: "hsl(216 34% 17%)",
+              input: "hsl(216 34% 17%)",
+              ring: "hsl(216 34% 17%)",
+              background: "hsl(224 71% 4%)",
+              foreground: "hsl(213 31% 91%)",
+              primary: {
+                DEFAULT: "hsl(210 40% 98%)",
+                foreground: "hsl(222 47% 1%)",
+              },
+              secondary: {
+                DEFAULT: "hsl(222 47% 11%)",
+                foreground: "hsl(210 40% 98%)",
+              },
+              destructive: {
+                DEFAULT: "hsl(0 63% 31%)",
+                foreground: "hsl(210 40% 98%)",
+              },
+              muted: {
+                DEFAULT: "hsl(223 47% 11%)",
+                foreground: "hsl(215 16% 40%)",
+              },
+              accent: {
+                DEFAULT: "hsl(216 34% 17%)",
+                foreground: "hsl(210 40% 98%)",
+              },
+              popover: {
+                DEFAULT: "hsl(224 71% 4%)",
+                foreground: "hsl(215 20% 65%)",
+              },
+              card: {
+                DEFAULT: "hsl(224 71% 4%)",
+                foreground: "hsl(213 31% 91%)",
+              },
+            },
+          }
+        }]
+    })
+  ],
 } satisfies Config;
