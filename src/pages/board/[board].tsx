@@ -108,6 +108,7 @@ const Board: NextPage = () => {
     if (result.type === "task") {
       task.mutate({
         boardId: String(router.query.board),
+        // TODO
         listId: "clj30rn6h0019v7fgcsyr9047",
         taskId: result.draggableId,
         newPosition: result.destination.index,
