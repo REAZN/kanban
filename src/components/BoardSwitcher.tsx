@@ -1,11 +1,10 @@
-import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
-import { useRouter } from "next/router";
-import { api, type RouterOutputs } from "@/utils/api";
+import { CheckIcon, ChevronsUpDownIcon, PlusIcon } from "lucide-react";
+import { api, type RouterOutputs } from "@/lib/api";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn, stringToHslColor } from "@/lib/utils";
-import { useSettingsStore } from "@/store";
+import { useBoardStore } from "@/store";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -29,8 +28,7 @@ type Board = RouterOutputs["board"]["getAll"][0];
 
 export const BoardSwitcher = () => {
   const { data: sessionData } = useSession();
-  const router = useRouter();
-  const { selectedBoard, setSelectedBoard } = useSettingsStore();
+  const { board, user } = useBoardStore();
 
   const [open, setOpen] = useState(false);
 
@@ -38,20 +36,14 @@ export const BoardSwitcher = () => {
     data: boards,
     refetch: refetchBoards,
     isLoading,
-  } = api.board.getAll.useQuery(undefined, {
-    enabled: sessionData?.user !== undefined,
-    // select: (data) => {
-    //   console.log("select ran", data);
-    // }
-  });
-
-  // const [selectedBoard, setSelectedBoard] = useState<Board | undefined>();
-
-  useEffect(() => {
-    setSelectedBoard(
-      boards?.find((board) => board.id === router.query.board) ?? selectedBoard
-    );
-  }, [boards, router.query.board, setSelectedBoard, selectedBoard]);
+  } = api.board.getAll.useQuery(
+    {
+      userId: user?.id,
+    },
+    {
+      enabled: !!user?.id,
+    }
+  );
 
   const createBoard = api.board.create.useMutation({
     onSuccess: () => {
@@ -74,7 +66,7 @@ export const BoardSwitcher = () => {
             {isLoading ? (
               <Skeleton className="rounded-full" />
             ) : (
-              <AvatarImage src={``} alt={selectedBoard?.name} />
+              <AvatarImage src={``} alt={board?.name} />
             )}
             <AvatarFallback>
               {isLoading ? (
@@ -84,9 +76,9 @@ export const BoardSwitcher = () => {
                   className="h-full w-full"
                   style={{
                     background: `linear-gradient(-45deg, ${stringToHslColor(
-                      String(selectedBoard?.name)
+                      String(board?.id)
                     )} 25%, ${stringToHslColor(
-                      String(selectedBoard?.name) + "yeet"
+                      String(board?.id) + "yeet"
                     )} 75%)`,
                   }}
                 />
@@ -97,9 +89,9 @@ export const BoardSwitcher = () => {
           {isLoading ? (
             <Skeleton className="h-1/2 w-1/2 rounded-full" />
           ) : (
-            selectedBoard?.name
+            board?.name
           )}
-          <ChevronsUpDown className="ml-3 ml-auto h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDownIcon className="ml-3 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
@@ -110,7 +102,10 @@ export const BoardSwitcher = () => {
             <CommandGroup heading="Personal">
               {isLoading && <div>Loading...</div>}
               {boards?.map((board, index) => (
-                <Link href={`/board/${board.id}`} key={board.id}>
+                <Link
+                  href={`/${board.owner?.username ?? "bozo"}/${board.slug}`}
+                  key={board.id}
+                >
                   <CommandItem
                     key={index}
                     onSelect={() => {
@@ -124,29 +119,26 @@ export const BoardSwitcher = () => {
                         <div
                           style={{
                             background: `linear-gradient(-45deg, ${stringToHslColor(
-                              String(board.name)
-                            )} 25%, ${stringToHslColor(
-                              String(board.name) + "yeet"
-                            )} 75%)`,
+                              String(board.id)
+                            )} 20%, ${stringToHslColor(
+                              String(board.id) + "yeet"
+                            )} 80%)`,
                           }}
                           className={"h-full w-full"}
                         />
                       </AvatarFallback>
                     </Avatar>
                     {board.name}
-                    <Check
+                    <CheckIcon
                       className={cn(
                         "ml-auto h-4 w-4",
-                        selectedBoard?.id === board.id
-                          ? "opacity-100"
-                          : "opacity-0"
+                        board?.id === board.id ? "opacity-100" : "opacity-0"
                       )}
                     />
                   </CommandItem>
                 </Link>
               ))}
             </CommandGroup>
-            {/*))}*/}
           </CommandList>
           <CommandSeparator />
           <CommandList>
@@ -154,16 +146,18 @@ export const BoardSwitcher = () => {
               <CommandItem
                 onSelect={() => {
                   setOpen(false);
+                  // TODO change slug gen
                   createBoard.mutate({
                     name: `${
                       sessionData?.user?.name
                         ? `${sessionData?.user?.name}'s`
                         : "New"
                     } Board`,
+                    slug: `${sessionData?.user?.username ?? "new"}-board`,
                   });
                 }}
               >
-                <PlusCircle className="mr-2 h-5 w-5" />
+                <PlusIcon className="mr-2 h-5 w-5" />
                 New Board
               </CommandItem>
             </CommandGroup>
