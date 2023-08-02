@@ -51,38 +51,40 @@ module.exports = {
       defaultTheme: {
         extend: {
           colors: {
-            border: "hsl(214 32% 91%)",
-            input: "hsl(214 32% 91%)",
-            ring: "hsl(215 20% 65%)",
+            border: "hsl(240 5.9% 90%)",
+            input: "hsl(240 5.9% 90%)",
+            ring: "hsl(240 5% 64.9%)",
             background: "hsl(0 0% 100%)",
-            foreground: "hsl(222 47% 11%)",
+            foreground: "hsl(240 10% 3.9%)",
             primary: {
-              DEFAULT: "hsl(222 47% 11%)",
-              foreground: "hsl(210 40% 98%)",
+              DEFAULT: "hsl(240 5.9% 10%)",
+              foreground: "hsl(0 0% 98%)",
             },
             secondary: {
-              DEFAULT: "hsl(210 40% 96%)",
-              foreground: "hsl(222 47% 11%)",
+              DEFAULT: "hsl(240 4.8% 95.9%)",
+              foreground: "hsl(240 5.9% 10%)",
             },
             destructive: {
-              DEFAULT: "hsl(0 100% 50%)",
-              foreground: "hsl(210 40% 98%)",
+              DEFAULT: "hsl(0 84.2% 60.2%)",
+              // DEFAULT: "hsl(0, 100%, 96%)",
+              foreground: "hsl(0 0% 98%)",
+              // foreground: "hsl(358, 65%, 36%)",
             },
             muted: {
-              DEFAULT: "hsl(210 40% 96%)",
-              foreground: "hsl(215 16% 40%)",
+              DEFAULT: "hsl(240 4.8% 95.9%)",
+              foreground: "hsl(240 3.8% 46.1%)",
             },
             accent: {
-              DEFAULT: "hsl(210 40% 96%)",
-              foreground: "hsl(222 47% 11%)",
+              DEFAULT: "hsl(240 4.8% 95.9%)",
+              foreground: "hsl(240 5.9% 10%)",
             },
             popover: {
               DEFAULT: "hsl(0 0% 100%)",
-              foreground: "hsl(222 47% 11%)",
+              foreground: "hsl(240 10% 3.9%)",
             },
             card: {
               DEFAULT: "hsl(0 0% 100%)",
-              foreground: "hsl(222 47% 11%)",
+              foreground: "hsl(240 10% 3.9%)",
             },
           },
 
@@ -92,38 +94,40 @@ module.exports = {
           name: "dark",
           extend: {
             colors: {
-              border: "hsl(216 34% 17%)",
-              input: "hsl(216 34% 17%)",
+              border: "hsl(240 3.7% 15.9%)",
+              input: "hsl(240 3.7% 15.9%)",
               ring: "hsl(216 34% 17%)",
-              background: "hsl(224 71% 4%)",
-              foreground: "hsl(213 31% 91%)",
+              background: "hsl(240 10% 3.9%)",
+              foreground: "hsl(0 0% 98%)",
               primary: {
-                DEFAULT: "hsl(210 40% 98%)",
-                foreground: "hsl(222 47% 1%)",
+                DEFAULT: "hsl(0 0% 98%)",
+                foreground: "hsl(240 5.9% 10%)",
               },
               secondary: {
-                DEFAULT: "hsl(222 47% 11%)",
-                foreground: "hsl(210 40% 98%)",
+                DEFAULT: "hsl(240 3.7% 15.9%)",
+                foreground: "hsl(0 0% 98%)",
               },
               destructive: {
-                DEFAULT: "hsl(0 63% 31%)",
-                foreground: "hsl(210 40% 98%)",
+                // DEFAULT: "hsl(0 62.8% 30.6%)",
+                DEFAULT: "hsl(357, 46%, 20%)",
+                // foreground: "hsl(0 85.7% 97.3%)",
+                foreground: "hsl(358, 100%, 69%)",
               },
               muted: {
-                DEFAULT: "hsl(223 47% 11%)",
-                foreground: "hsl(215 16% 40%)",
+                DEFAULT: "hsl(240 3.7% 15.9%)",
+                foreground: "hsl(240 5% 64.9%)",
               },
               accent: {
-                DEFAULT: "hsl(216 34% 17%)",
-                foreground: "hsl(210 40% 98%)",
+                DEFAULT: "hsl(240 3.7% 15.9%)",
+                foreground: "hsl(0 0% 98%)",
               },
               popover: {
-                DEFAULT: "hsl(224 71% 4%)",
-                foreground: "hsl(215 20% 65%)",
+                DEFAULT: "hsl(240 10% 3.9%)",
+                foreground: "hsl(0 0% 98%)",
               },
               card: {
-                DEFAULT: "hsl(224 71% 4%)",
-                foreground: "hsl(213 31% 91%)",
+                DEFAULT: "hsl(240 10% 3.9%)",
+                foreground: "hsl(0 0% 98%)",
               },
             },
           }
